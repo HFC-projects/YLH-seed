@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
+import { CoreModule } from './core/core.module';
 import * as Joi from '@hapi/joi';
 
 
@@ -19,8 +19,8 @@ const CustomConfigModule = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [AuthModule, UsersModule, CustomConfigModule],
+  imports: [CoreModule, UsersModule, CustomConfigModule, CommonModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}

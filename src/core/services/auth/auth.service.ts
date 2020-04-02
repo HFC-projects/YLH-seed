@@ -1,24 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import {UsersService } from '../users/users.service';
-import { User } from '../interfaces/user.interface';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from './dto/user.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginRequestDto } from '../../../users/dto/login.request.dto';
+import { UsersService } from '../../../users/users.service';
+import { UserDto } from '../../../users/dto/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
-  async validateUser(username:string, pass: string): Promise<User>{
-    const user = await this.usersService.findOne(username);
+  async validateUser(username:string, pass: string): Promise<UserDto>{
+    const user = await this.usersService.findByName(username);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
     }
-    return null;
+    throw new UnauthorizedException('The user does not exist');
   }
 
-  async login(login: LoginDto) {
+  async login(login: LoginRequestDto) {
     const user = await this.validateUser(login.username, login.password);
     const payload = { username: user.username, userId: user.userId };
     return {
