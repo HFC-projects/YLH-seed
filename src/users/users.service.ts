@@ -1,34 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { UserModel } from './user.model';
+import { ReturnModelType } from '@typegoose/typegoose';
+import { InjectModel } from 'nestjs-typegoose';
 import { UserDto } from './dto/user.dto';
+import { CreateUserDto } from './dto/createUser.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users: UserDto[];
 
-  constructor(){
-    this.users = [
-      {
-        userId: '1',
-        username: 'meni',
-        password: '123',
-      },
-      {
-        userId: '2',
-        username: 'chris',
-        password: 'secret',
-      },
-      {
-        userId: '3',
-        username: 'maria',
-        password: 'guess',
-      },
-    ];
-  }
-  async findByName(username: string){
-    return this.users.find(user => user.username === username);
+  constructor(@InjectModel(UserModel) private readonly model: ReturnModelType<typeof UserModel>) {
   }
 
-  async findById(id: string){
-    return this.users.find(user => user.userId === id);
+  async findById(id: string): Promise<UserDto> {
+    const user = await this.model.findById(id);
+
+    return user.toJSON();
+  }
+
+  async findByName(username: string) : Promise<UserDto>{
+    const user = await this.model.findOne({username});
+
+    return user.toJSON();
+  }
+
+  async create(createUserDto: CreateUserDto) : Promise<UserDto>{
+    const newUser = await this.model.create(createUserDto);
+    return newUser.toJSON();
   }
 }

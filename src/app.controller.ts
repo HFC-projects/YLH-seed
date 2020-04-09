@@ -11,12 +11,6 @@ import { AuthService } from './core/services/auth/auth.service';
 export class AppController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get()
-  getHello(): string {
-    return "Hello world";
-  }
-
   @Post("login")
   async login(@Request() req, @Body() user: LoginRequestDto): Promise<UserDto>{
     return this.authService.login(user);

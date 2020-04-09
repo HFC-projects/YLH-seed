@@ -2,13 +2,13 @@ import { Expose, Type } from 'class-transformer';
 import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LoginRequestDto {
+export class CreateUserDto {
 
   @Expose()
   @IsString()
   @Type(() => String)
   @ApiProperty({required: true, description: 'the user name'})
-  readonly username:string;
+  readonly username: string;
 
   @Expose()
   @IsString()
