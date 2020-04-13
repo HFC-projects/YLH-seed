@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+dotenv.config();
 import * as helmet from 'helmet';
 import { config } from './config';
 import { AppModule } from './app.module';
@@ -8,7 +9,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { LoggerService } from './core/services/logger.service';
 import { LoggerInterceptor } from './core/interceptors/logger.interceptor';
 import { HttpExceptionFilter } from './core/filters/exception.filter';
-dotenv.config();
 
 const logger: LoggerService = LoggerService.createLogger('BootstrapApp');
 

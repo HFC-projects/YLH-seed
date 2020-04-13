@@ -20,7 +20,7 @@ export class UsersService {
   async findByName(username: string) : Promise<UserDto>{
     const user = await this.model.findOne({username});
 
-    return user.toJSON();
+    return user && user.toJSON();
   }
 
   async create(createUserDto: CreateUserDto) : Promise<UserDto>{
