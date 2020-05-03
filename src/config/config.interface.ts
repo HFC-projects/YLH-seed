@@ -19,6 +19,10 @@ export interface Config {
   environment: Environment;
   isProd: boolean;
   auth?: {secret: string};
+  logger:{
+    context: string;
+    level: string;
+  },
   dataAccess: {
     uri: string,
     debug: boolean,

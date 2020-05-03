@@ -1,9 +1,18 @@
-version: "2"
+version: "3.6"
+
+networks:
+  splunknet:
+    driver: bridge
+    attachable: true
+
 services:
   app:
     container_name: app
     restart: always
     build: .
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/
     ports:
       - "3000:3000"
     links:
@@ -15,3 +24,38 @@ services:
       - /data:/data/db
     ports:
       - "27017:27017"
+  splunk:
+    networks:
+      splunknet:
+        aliases:
+          - splunk
+    image: splunk/splunk:latest
+    hostname: splunk
+    container_name: splunk
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_STANDALONE_URL=splunk
+      - SPLUNK_PASSWORD=12345678
+      - SPLUNK_USER=root
+    ports:
+      - "8000:8000"
+      - "8089:8089"
+  splunkforwardr:
+    networks:
+      splunknet:
+        aliases:
+          - splunkforwardr
+    image: splunk/universalforwarder:latest
+    hostname: splunkforwardr
+    container_name: splunkforwardr
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_STANDALONE_URL=splunk
+      - SPLUNK_PASSWORD=12345678
+    ports:
+      - "8082:8089"
+    volumes:
+      - ./logs:/opt/splunkforwarder/var/log
+      - /splunk/inputs.conf:/opt/splunkforwarder/etc/system/local/inputs.conf
+    depends_on:
+      - splunk

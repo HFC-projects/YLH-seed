@@ -10,7 +10,7 @@ import { LoggerService } from './core/services/logger.service';
 import { LoggerInterceptor } from './core/interceptors/logger.interceptor';
 import { HttpExceptionFilter } from './core/filters/exception.filter';
 
-const logger: LoggerService = LoggerService.createLogger('BootstrapApp');
+const logger: LoggerService = LoggerService.createLogger(config.logger.context);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
