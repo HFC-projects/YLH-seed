@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as helmet from 'helmet';
+import * as compression from 'compression';
 import { config } from './config';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
@@ -19,6 +20,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggerInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(helmet());
+  app.use(compression());
 
   const options = new DocumentBuilder()
     .setTitle(config.app.name)
