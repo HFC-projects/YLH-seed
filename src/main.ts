@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as helmet from 'helmet';
+import * as compression from 'compression';
 import { config } from './config';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
@@ -10,7 +11,7 @@ import { LoggerService } from './core/services/logger.service';
 import { LoggerInterceptor } from './core/interceptors/logger.interceptor';
 import { HttpExceptionFilter } from './core/filters/exception.filter';
 
-const logger: LoggerService = LoggerService.createLogger('BootstrapApp');
+const logger: LoggerService = LoggerService.createLogger(config.logger.context);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggerInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(helmet());
+  app.use(compression());
 
   const options = new DocumentBuilder()
     .setTitle(config.app.name)

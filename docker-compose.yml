@@ -1,9 +1,12 @@
-version: "2"
+version: "3.6"
+
 services:
   app:
     container_name: app
-    restart: always
     build: .
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/
     ports:
       - "3000:3000"
     links:
@@ -15,3 +18,27 @@ services:
       - /data:/data/db
     ports:
       - "27017:27017"
+  elasticsearch:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.8.0"
+    environment:
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "discovery.type=single-node"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+  kibana:
+    image: "docker.elastic.co/kibana/kibana:7.2.0"
+    ports:
+      - "5601:5601"
+
+  filebeat:
+    image: "docker.elastic.co/beats/filebeat:7.2.0"
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  elasticsearch_data:

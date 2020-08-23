@@ -20,7 +20,11 @@ export const defaultConfig: Config = {
   environment: environment,
   isProd: environment === Environment.Production,
   auth: {
-    secret: config.get('SECRET')
+    secret: config.get('SECRET'),
+  },
+  logger: {
+    level: 'silly',
+    context: 'appStart',
   },
   dataAccess: {
     uri: config.get<string>('MONGO_URI', `mongodb://127.0.0.1:27017/${name}`),

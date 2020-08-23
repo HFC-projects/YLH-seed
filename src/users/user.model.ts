@@ -14,9 +14,9 @@ export class UserModel {
   @prop({ type: String, required: true, trim: true})
   password: string;
 
-  @prop({ type: Date, default: Date.now })
-  createTime: Date;
+  @prop({ type: Date, default: Date.now , required:false})
+  createTime?: Date;
 
-  @prop({ type: Date, default: Date.now })
-  updateTime: Date;
+  @prop({ type: Date, default: Date.now , required: false})
+  updateTime?: Date;
 }
