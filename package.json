@@ -34,7 +34,7 @@
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "helmet": "^3.23.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mongoose": "^5.10.0",
     "nestjs-typegoose": "^7.1.32",
     "passport": "^0.4.1",
