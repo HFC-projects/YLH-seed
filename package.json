@@ -25,7 +25,7 @@
     "@nestjs/jwt": "^7.1.0",
     "@nestjs/mongoose": "^6.4.0",
     "@nestjs/passport": "^7.1.0",
-    "@nestjs/platform-express": "^6.10.14",
+    "@nestjs/platform-express": "^9.2.1",
     "@nestjs/swagger": "^4.5.12",
     "@typegoose/typegoose": "^6.5.0",
     "bcrypt": "^4.0.1",
